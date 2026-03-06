@@ -1,0 +1,126 @@
+:root {
+  --primary: #2563eb;
+  --secondary: #64748b;
+  --success: #22c55e;
+  --danger: #ef4444;
+  --bg: #1e293b;
+  --card-bg: #ffffff;
+  --text-main: #1e293b;
+  --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: var(--bg);
+  color: #ffffff;
+}
+
+.main-container {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 900px) {
+  .main-container { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--card-bg);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+  color: var(--text-main);
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  background-color: #f8fafc;
+  color: #1e293b !important;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-main);
+}
+
+th {
+  background-color: #f1f5f9;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 2px solid #cbd5e1;
+}
+
+td {
+  padding: 15px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.btn-submit {
+  background-color: var(--primary);
+  color: white;
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.controls {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.filter-dropdown {
+  padding: 10px;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  background-color: white;
+  color: #1e293b;
+  cursor: pointer;
+}
+
+.btn-search {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-clear {
+  background-color: #94a3b8;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-submit:hover { transform: scale(1.02); }
+
+.actions { display: flex; gap: 10px; }
+
+.btn-edit { background: #eab308; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+.btn-delete { background: var(--danger); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; }
+
+footer {
+  text-align: center;
+  padding: 2rem;
+  color: #94a3b8;
+}
