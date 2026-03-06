@@ -17,12 +17,19 @@ body {
 }
 
 .main-container {
-  display: grid;
+  display: grid; /* Requirement: CSS Grid */
   grid-template-columns: 380px 1fr;
   gap: 2rem;
   padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  max-width: 1200px; /* Limits the width for better centering */
+  margin: 0 auto;    /* This is the secret for horizontal centering */
+  min-height: 80vh;  /* Gives it some vertical space */
+  align-items: start;
+}
+
+.navbar {
+  text-align: center; /* Centers your "Student Record System" title */
+  padding: 2rem;
 }
 
 @media (max-width: 900px) {
@@ -122,5 +129,5 @@ td {
 footer {
   text-align: center;
   padding: 2rem;
-  color: #94a3b8;
+  width: 100%;
 }
