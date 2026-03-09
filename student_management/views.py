@@ -1,12 +1,19 @@
-from rest_framework import viewsets, filters
-from .models import Student
-from .serializers import StudentSerializer
+# class StudentViewSet(viewsets.mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet, mixins.DestroyModelMixin): #CRUD using built in django class
 
-class StudentViewSet(viewsets.ModelViewSet):
-    # SELECT all students & ORDER BY last_name ASC [cite: 25, 30]
-    queryset = Student.objects.all().order_by('last_name') 
+from rest_framework import viewsets, filters, mixins
+from .models import Student, Course, StudentRecord
+from .serializers import StudentSerializer, CourseSerializer, StudentRecordSerializer
+
+class StudentViewSet(viewsets.mixins.CreateModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet, mixins.DestroyModelMixin): # for demonstration purposes. (viewsets.ModelViewSet) is better if you need all CRUD
+    queryset = Student.objects.all()
     serializer_class = StudentSerializer
 
-    # SEARCH using LIKE (Handles "Search student by name") [cite: 8, 29]
+class CourseViewSet(viewsets.ModelViewSet):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
+
+class StudentRecordViewSet(viewsets.ModelViewSet):
+    queryset = StudentRecord.objects.all().order_by('student__last_name')
+    serializer_class = StudentRecordSerializer
     filter_backends = [filters.SearchFilter]
-    search_fields = ['first_name', 'last_name']
+    search_fields = ['student__first_name', 'student__last_name', 'course__course_name'] 

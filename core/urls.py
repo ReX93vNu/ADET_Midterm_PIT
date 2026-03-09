@@ -1,4 +1,4 @@
-"""
+""" django default comments
 URL configuration for core project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -17,12 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from student_management.views import StudentViewSet
+from student_management.views import StudentViewSet, CourseViewSet, StudentRecordViewSet
 
-router = DefaultRouter()
-router.register(r'students', StudentViewSet) # Creates all routes automatically
+router = DefaultRouter() # automaticaly makes default url built in to django
+router.register(r'students', StudentViewSet) # the student info
+router.register(r'courses', CourseViewSet) # courses info
+router.register(r'records', StudentRecordViewSet) # main table showing everything
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/', include(router.urls)), # Accessible at /api/students/
+    path('api/', include(router.urls)),
 ]
+
+
+

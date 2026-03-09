@@ -1,13 +1,16 @@
 from django.contrib import admin
-from .models import Student # Import your model [cite: 14]
+from .models import Student, Course, StudentRecord
 
 @admin.register(Student)
 class StudentAdmin(admin.ModelAdmin):
-    # This fulfills the "View all students" and "ORDER BY" requirements [cite: 5, 30]
-    list_display = ('student_number', 'first_name', 'last_name', 'course', 'year_level') 
-    
-    # This fulfills the "Search student by name" requirement [cite: 8, 29]
-    search_fields = ('first_name', 'last_name', 'student_number') 
-    
-    # This fulfills the "Filter by course" requirement [cite: 9, 66]
-    list_filter = ('course',)
+    list_display = ('id', 'first_name', 'last_name', 'age', 'city')
+    search_fields = ('first_name', 'last_name')
+
+@admin.register(Course)
+class CourseAdmin(admin.ModelAdmin):
+    list_display = ('id', 'course_name', 'college')
+
+@admin.register(StudentRecord)
+class StudentRecordAdmin(admin.ModelAdmin):
+    list_display = ('id', 'student', 'course', 'year_level', 'enrollment_date')
+    list_filter = ('course', 'year_level') 
