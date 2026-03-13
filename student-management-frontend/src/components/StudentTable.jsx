@@ -1,11 +1,16 @@
 import React from 'react';
-import { deleteStudent } from '../api';
+import { deleteRecord } from '../api';
 
-const StudentTable = ({ students, refresh, setEditingStudent }) => {
+const StudentTable = ({ records, refresh, setEditingRecord }) => {
   const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this record?")) {
-      await deleteStudent(id);
-      refresh();
+    if (window.confirm("Delete this record?")) {
+      try {
+        await deleteRecord(id);
+        refresh();
+      } catch (err) {
+        console.error("Delete failed:", err);
+        alert("Could not delete record.");
+      }
     }
   };
 
@@ -14,26 +19,47 @@ const StudentTable = ({ students, refresh, setEditingStudent }) => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
-            <th>Name</th>
+            <th>Student</th>
             <th>Course</th>
+            <th>College</th>
             <th>Year</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {students.map((student) => (
-            <tr key={student.id}>
-              <td>{student.student_number}</td>
-              <td>{student.last_name}, {student.first_name}</td>
-              <td>{student.course}</td>
-              <td>{student.year_level}</td>
-              <td className="actions">
-                <button className="btn-edit" onClick={() => setEditingStudent(student)}>Edit</button>
-                <button className="btn-delete" onClick={() => handleDelete(student.id)}>Delete</button>
+          {records.length === 0 ? (
+            <tr>
+              <td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>
+                No records found.
               </td>
             </tr>
-          ))}
+          ) : (
+            records.map((r) => (
+              <tr key={r.id}>
+                <td>{r.student?.last_name}, {r.student?.first_name}</td>
+                <td>{r.course?.course_name}</td>
+                <td>{r.course?.college}</td>
+                <td>{r.year_level}</td>
+                <td>
+                  <div className="actions">
+                    <button 
+                      className="btn-edit" 
+                      onClick={() => setEditingRecord(r)}
+                    >
+                      Edit
+                    </button>
+
+                    <button 
+                      className="btn-delete" 
+                      onClick={() => handleDelete(r.id)}
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </table>
     </div>

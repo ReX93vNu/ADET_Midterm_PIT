@@ -1,11 +1,10 @@
 import axios from 'axios';
 
-const API = axios.create({
-  baseURL: 'http://127.0.0.1:8000/api/students'
-});
+const API_URL = 'http://127.0.0.1:8000/api';
 
-export const fetchStudents = () => API.get('/');
-export const createStudent = (data) => API.post('/', data);
-export const updateStudent = (id, data) => API.put(`/${id}/`, data);
-export const deleteStudent = (id) => API.delete(`/${id}/`);
-export const searchStudents = (query) => API.get(`/search/?keyword=${query}`);
+export const fetchRecords = () => axios.get(`${API_URL}/records/`);
+export const fetchStudents = () => axios.get(`${API_URL}/students/`);
+export const fetchCourses = () => axios.get(`${API_URL}/courses/`);
+export const createRecord = (data) => axios.post(`${API_URL}/records/`, data);
+export const deleteRecord = (id) => axios.delete(`${API_URL}/records/${id}/`);
+export const updateRecord = (id, data) => axios.put(`${API_URL}/records/${id}/`, data);

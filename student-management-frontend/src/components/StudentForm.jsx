@@ -1,50 +1,99 @@
 import React, { useState, useEffect } from 'react';
-import { createStudent, updateStudent } from '../api';
+import { createRecord, updateRecord } from '../api';
 
-const StudentForm = ({ refresh, editingStudent, setEditingStudent }) => {
+const StudentForm = ({ refresh, students, courses, editingRecord, setEditingRecord }) => {
   const [formData, setFormData] = useState({
-    student_number: '', first_name: '', last_name: '', course: '', year_level: ''
+    student_id: '',
+    course_id: '',
+    year_level: ''
   });
 
   useEffect(() => {
-    if (editingStudent) setFormData(editingStudent);
-  }, [editingStudent]);
+    if (editingRecord) {
+      setFormData({
+        student_id: editingRecord.student?.id || '',
+        course_id: editingRecord.course?.id || '',
+        year_level: editingRecord.year_level || ''
+      });
+    } else {
+      setFormData({ student_id: '', course_id: '', year_level: '' });
+    }
+  }, [editingRecord]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (editingStudent) {
-        await updateStudent(editingStudent.id, formData);
-        setEditingStudent(null);
+      if (editingRecord) {
+        await updateRecord(editingRecord.id, formData);
+        alert("Record updated successfully!");
+        setEditingRecord(null); 
       } else {
-        await createStudent(formData);
+        await createRecord(formData);
+        alert("Enrolled successfully!");
       }
-      setFormData({ student_number: '', first_name: '', last_name: '', course: '', year_level: '' });
       refresh();
-      alert("Success!");
-    } catch (error) {
-      alert("Error saving student. Check if Student Number is unique.");
+      setFormData({ student_id: '', course_id: '', year_level: '' });
+    } catch (err) {
+      console.error("Submission Error:", err.response?.data);
+      alert("Action failed. Check console for details.");
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="student-form">
-      <input type="text" placeholder="Student Number" value={formData.student_number} 
-        onChange={(e) => setFormData({...formData, student_number: e.target.value})} required />
-      <input type="text" placeholder="First Name" value={formData.first_name} 
-        onChange={(e) => setFormData({...formData, first_name: e.target.value})} required />
-      <input type="text" placeholder="Last Name" value={formData.last_name} 
-        onChange={(e) => setFormData({...formData, last_name: e.target.value})} required />
-      <select value={formData.course} onChange={(e) => setFormData({...formData, course: e.target.value})} required>
-        <option value="">Select Course</option>
-        <option value="BSIT">BSIT</option>
-        <option value="BSCS">BSCS</option>
-        <option value="BSCPE">BSCPE</option>
-      </select>
-      <input type="number" placeholder="Year Level" value={formData.year_level} 
-        onChange={(e) => setFormData({...formData, year_level: e.target.value})} required />
-      <button type="submit" className="btn-submit">{editingStudent ? 'Update' : 'Add'} Student</button>
-      {editingStudent && <button onClick={() => setEditingStudent(null)}>Cancel</button>}
+      <div className="form-group">
+        <label>Select Student</label>
+        <select 
+          value={formData.student_id}
+          onChange={(e) => setFormData({...formData, student_id: e.target.value})} 
+          required
+        >
+          <option value="">-- Choose Student --</option>
+          {students.map(s => (
+            <option key={s.id} value={s.id}>{s.last_name}, {s.first_name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Select Course</label>
+        <select 
+          value={formData.course_id}
+          onChange={(e) => setFormData({...formData, course_id: e.target.value})} 
+          required
+        >
+          <option value="">-- Choose Course --</option>
+          {courses.map(c => (
+            <option key={c.id} value={c.id}>{c.course_name}</option>
+          ))}
+        </select>
+      </div>
+
+      <div className="form-group">
+        <label>Year Level</label>
+        <input 
+          type="number" 
+          value={formData.year_level}
+          onChange={(e) => setFormData({...formData, year_level: e.target.value})} 
+          required 
+        />
+      </div>
+      
+      <div style={{ display: 'flex', gap: '10px' }}>
+        <button type="submit" className="btn-submit">
+          {editingRecord ? "Update Record" : "Add Record"}
+        </button>
+        
+        {editingRecord && (
+          <button 
+            type="button" 
+            className="btn-cancel"
+            onClick={() => setEditingRecord(null)}
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 };
